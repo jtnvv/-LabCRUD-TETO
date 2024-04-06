@@ -1,0 +1,9 @@
+# Node
+node_modules/
+package-lock.json
+
+# Env
+.env
+
+# Base de datos test
+database.sql
