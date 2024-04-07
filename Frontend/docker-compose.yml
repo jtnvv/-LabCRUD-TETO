@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: crud-web
+    build: .
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
