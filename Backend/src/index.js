@@ -21,12 +21,14 @@ const authRoutes = require('./routes/auth')
 const personaRoutes = require('./routes/persona')
 const viviendaRoutes = require('./routes/vivienda')
 const municipioRoutes = require('./routes/municipio')
+const propietarioRoutes = require('./routes/propietario')
 
 //initialize routes
 app.use('/api', authRoutes)
 app.use(personaRoutes)
 app.use(viviendaRoutes)
 app.use(municipioRoutes)
+app.use(propietarioRoutes)
 
 
 //app start
