@@ -24,6 +24,7 @@ const municipioRoutes = require('./routes/municipio')
 const propietarioRoutes = require('./routes/propietario')
 const resideRoutes = require('./routes/reside')
 const dependienteRoutes = require('./routes/dependiente')
+const ubicadaEnRoutes = require('./routes/ubicada-en')
 
 //initialize routes
 app.use('/api', authRoutes)
@@ -33,6 +34,7 @@ app.use(municipioRoutes)
 app.use(propietarioRoutes)
 app.use(resideRoutes)
 app.use(dependienteRoutes)
+app.use(ubicadaEnRoutes)
 
 
 //app start
