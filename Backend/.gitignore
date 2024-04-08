@@ -6,4 +6,4 @@ package-lock.json
 .env
 
 # Base de datos test
-database.sql
+# database.sql
