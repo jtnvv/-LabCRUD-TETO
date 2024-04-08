@@ -20,11 +20,13 @@ app.use(passport.initialize())
 const authRoutes = require('./routes/auth')
 const personaRoutes = require('./routes/persona')
 const viviendaRoutes = require('./routes/vivienda')
+const municipioRoutes = require('./routes/municipio')
 
 //initialize routes
 app.use('/api', authRoutes)
 app.use(personaRoutes)
 app.use(viviendaRoutes)
+app.use(municipioRoutes)
 
 
 //app start
