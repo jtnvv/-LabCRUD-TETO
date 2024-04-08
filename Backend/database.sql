@@ -37,28 +37,33 @@ CREATE TABLE IF NOT EXISTS public.dependiente
 (
     id_cabeza_familia serial NOT NULL,
     id_dependiente serial NOT NULL,
-    CONSTRAINT pk_dependientes PRIMARY KEY (id_cabeza_familia, id_dependiente)
+    CONSTRAINT pk_dependientes PRIMARY KEY (id_cabeza_familia, id_dependiente),
+    CONSTRAINT unique_dependiente UNIQUE (id_dependiente)
 );
 
 CREATE TABLE IF NOT EXISTS public.reside
 (
     id_persona serial NOT NULL,
     id_vivienda serial NOT NULL,
-    PRIMARY KEY (id_persona, id_vivienda)
+    PRIMARY KEY (id_persona, id_vivienda),
+    CONSTRAINT unique_residente UNIQUE (id_persona)
 );
 
 CREATE TABLE IF NOT EXISTS public.ubicada_en
 (
     id_vivienda serial NOT NULL,
     id_municipio serial NOT NULL,
-    PRIMARY KEY (id_vivienda, id_municipio)
+    PRIMARY KEY (id_vivienda, id_municipio),
+    CONSTRAINT unique_id_vivienda UNIQUE (id_vivienda)
 );
 
 CREATE TABLE IF NOT EXISTS public.gobierna
 (
     id_municipio serial NOT NULL,
     id_persona serial NOT NULL,
-    PRIMARY KEY (id_municipio, id_persona)
+    PRIMARY KEY (id_municipio, id_persona),
+    CONSTRAINT unique_municipio UNIQUE (id_municipio),
+    CONSTRAINT unique_gobernante UNIQUE (id_persona)
 );
 
 CREATE TABLE IF NOT EXISTS public.propietario
