@@ -23,6 +23,9 @@ const viviendaRoutes = require('./routes/vivienda')
 const municipioRoutes = require('./routes/municipio')
 const propietarioRoutes = require('./routes/propietario')
 const resideRoutes = require('./routes/reside')
+const dependienteRoutes = require('./routes/dependiente')
+const ubicadaEnRoutes = require('./routes/ubicada-en')
+const gobiernaRoutes = require('./routes/gobierna')
 
 //initialize routes
 app.use('/api', authRoutes)
@@ -31,6 +34,9 @@ app.use(viviendaRoutes)
 app.use(municipioRoutes)
 app.use(propietarioRoutes)
 app.use(resideRoutes)
+app.use(dependienteRoutes)
+app.use(ubicadaEnRoutes)
+app.use(gobiernaRoutes)
 
 
 //app start
