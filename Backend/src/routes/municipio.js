@@ -3,18 +3,18 @@ const { Router } = require('express')
 
 const router = Router()
 
-// CRUD vivienda ////////////////////////////////////
+// CRUD municipio ////////////////////////////////////
 
 // CREATE 
-router.post("/vivienda", async (req, res) => {
+router.post("/municipio", async (req, res) => {
     try {
-      const { direccion, capacidad, niveles } = req.body;
-      const viviendaTemp = await db.query(
-        "INSERT INTO vivienda (direccion, capacidad, niveles) VALUES($1, $2, $3) RETURNING *",
-        [direccion, capacidad, niveles]
+      const { nombre, area, altitud } = req.body;
+      const municipioTemp = await db.query(
+        "INSERT INTO municipio (nombre, area, altitud) VALUES($1, $2, $3) RETURNING *",
+        [nombre, area, altitud]
       );
   
-      res.json(viviendaTemp.rows[0]);
+      res.json(municipioTemp.rows[0]);
     } catch (err) {
       res.json(err.message);
       console.error(err.message);
@@ -22,9 +22,9 @@ router.post("/vivienda", async (req, res) => {
   });
   
   // READ 
-  router.get("/vivienda", async (req, res) => {
+  router.get("/municipio", async (req, res) => {
     try {
-      const allTodos = await db.query("SELECT * FROM vivienda");
+      const allTodos = await db.query("SELECT * FROM municipio");
       res.json(allTodos.rows);
     } catch (err) {
       res.json(err.message);
@@ -33,10 +33,10 @@ router.post("/vivienda", async (req, res) => {
   });
   
   // READ INDIVIDUAL
-  router.get("/vivienda/:id", async (req, res) => {
+  router.get("/municipio/:id", async (req, res) => {
     try {
       const { id } = req.params;
-      const todo = await db.query("SELECT * FROM vivienda WHERE id_vivienda = $1",
+      const todo = await db.query("SELECT * FROM municipio WHERE id_municipio = $1",
         [id]
       );
   
@@ -48,16 +48,16 @@ router.post("/vivienda", async (req, res) => {
   });
   
   // UPDATE 
-  router.put("/vivienda/:id", async (req, res) => {
+  router.put("/municipio/:id", async (req, res) => {
     try {
       const { id } = req.params;
-      const { direccion, capacidad, niveles } = req.body;
+      const { nombre, area, altitud } = req.body;
       const updateTodo = await db.query(
-        "UPDATE vivienda SET direccion = $2, capacidad = $3, niveles = $4 WHERE id_vivienda = $1",
-        [id, direccion, capacidad, niveles]
+        "UPDATE municipio SET nombre = $2, area = $3, altitud = $4 WHERE id_municipio = $1",
+        [id, nombre, area, altitud]
       );
   
-      res.json("datos de vivienda actualizados");
+      res.json("datos de municipio actualizados");
     } catch (err) {
       res.json(err.message);
       console.error(err.message);
@@ -65,13 +65,13 @@ router.post("/vivienda", async (req, res) => {
   });
   
   // DELETE
-  router.delete("/vivienda/:id", async (req, res) => {
+  router.delete("/municipio/:id", async (req, res) => {
     try {
       const { id } = req.params;
-      const deleteTodo = await db.query("DELETE FROM vivienda WHERE id_vivienda = $1",
+      const deleteTodo = await db.query("DELETE FROM municipio WHERE id_municipio = $1",
         [id]
       );
-      res.json("datos de vivienda eliminados");
+      res.json("datos de municipio eliminados");
     } catch (err) {
       res.json(err.message);
       console.log(err.message);
