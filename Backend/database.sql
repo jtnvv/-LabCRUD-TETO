@@ -43,7 +43,8 @@ CREATE TABLE IF NOT EXISTS public.dependiente
 CREATE TABLE IF NOT EXISTS public.reside
 (
     id_persona serial NOT NULL,
-    id_vivienda serial NOT NULL
+    id_vivienda serial NOT NULL,
+    PRIMARY KEY (id_persona, id_vivienda)
 );
 
 CREATE TABLE IF NOT EXISTS public.ubicada_en
