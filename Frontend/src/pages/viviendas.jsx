@@ -1,6 +1,7 @@
 import Layout from "../components/layout/layout"
 import Card from "../components/card/card-vivienda"
 import { useState } from 'react';
+import CreateModal from "../components/modal/vivienda/modal-create-vivienda";
 
 export default function Viviendas() {
     const viviendas = Array.from({ length: 20 }, (_, i) => ({
@@ -11,6 +12,7 @@ export default function Viviendas() {
     }));
 
     const [search, setSearch] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const filteredViviendas = viviendas.filter(vivienda =>
         vivienda.direccion.toLowerCase().includes(search.toLowerCase())
@@ -21,6 +23,12 @@ export default function Viviendas() {
             <Layout>
                 <div className="flex flex-col md:flex-row">
                     <div className="md:w-1/4 p-4 font-lato flex flex-col items-center mt-20 m-5 md:ml-10">
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="mt-4 p-2 bg-color-1 text-color-4 rounded-xl text-2xl mb-10"
+                        >
+                            Agregar Vivienda
+                        </button>
                         <img src="src/assets/extra/vivienda.png" alt="Viviendas" className="w-80" />
                         <h1 className="text-6xl font-bold text-color-1">VIVIENDAS</h1>
                         <input
@@ -42,6 +50,7 @@ export default function Viviendas() {
                             />
                         ))}
                     </div>
+                    {isModalOpen && <CreateModal onClose={() => setIsModalOpen(false)} />}
                 </div>
             </Layout>
         </div>

@@ -1,15 +1,16 @@
 import { useState } from 'react';
 
 function Modal({ onClose }) {
-    const [idpropietario, setPropietario] = useState('');
-    const [direccion, setDireccion] = useState('');
-    const [capacidad, setCapacidad] = useState('');
-    const [niveles, setNiveles] = useState('');
+    const [nombre, setNombre] = useState('');
+    const [celular, setCelular] = useState('');
+    const [edad, setEdad] = useState('');
+    const [sexo, setSexo] = useState('');
+    const [dependiente, setDependiente] = useState('');
 
     const handleSubmit = (event) => {
         event.preventDefault();
         // Aquí puedes manejar la lógica de envío del formulario
-        console.log({ direccion, capacidad, niveles });
+        console.log({ nombre, celular, sexo });
         onClose();
     };
 
@@ -20,24 +21,32 @@ function Modal({ onClose }) {
                 <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                 <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                     <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                        <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">Editar Vivienda</h3>
+                        <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">Editar Persona</h3>
                         <form onSubmit={handleSubmit} className="space-y-4">
-                            <p className='mt-5'>Propietario: Nombre propietario</p>
                             <div className="flex flex-col">
-                                <label htmlFor="idpropietario" className="mb-2"> Agregar propietario</label>
-                                <input id="idpropietario" type="text" value={idpropietario} onChange={e => setPropietario(e.target.value)} placeholder="Documento propietario" className="p-2 border rounded" />
+                                <label htmlFor="nombre" className="mb-2">Cambiar nombre</label>
+                                <input id="nombre" type="text" value={nombre} onChange={e => setNombre(e.target.value)} placeholder="Nombre" className="p-2 border rounded" />
                             </div>
                             <div className="flex flex-col">
-                                <label htmlFor="direccion" className="mb-2">Cambiar dirección</label>
-                                <input id="direccion" type="text" value={direccion} onChange={e => setDireccion(e.target.value)} placeholder="Dirección" className="p-2 border rounded" />
+                                <label htmlFor="celular" className="mb-2">Cambiar número celular</label>
+                                <input id="celular" type="number" value={celular} onChange={e => setCelular(e.target.value)} placeholder="Numero celular (+57)" className="p-2 border rounded" />
                             </div>
                             <div className="flex flex-col">
-                                <label htmlFor="capacidad" className="mb-2">Cambiar capacidad</label>
-                                <input id="capacidad" type="number" value={capacidad} onChange={e => setCapacidad(e.target.value)} placeholder="Capacidad" className="p-2 border rounded" />
+                                <p>Edad</p>
+                                <p>Falta--</p>
                             </div>
                             <div className="flex flex-col">
-                                <label htmlFor="niveles" className="mb-2">Cambiar niveles</label>
-                                <input id="niveles" type="number" value={niveles} onChange={e => setNiveles(e.target.value)} placeholder="Niveles" className="p-2 border rounded" />
+                                <label htmlFor="sexo" className="mb-2">Modificar Sexo</label>
+                                <select id="sexo" value={sexo} onChange={e => setSexo(e.target.value)} className="p-2 border rounded">
+                                    <option value="" disabled>Selecciona una opción</option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Femenino">Femenino</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                            <div className="flex flex-col">
+                                <label htmlFor="dependiente" className="mb-2">Agregar un dependiente</label>
+                                <input id="dependiente" type="text" value={dependiente} onChange={e => setDependiente(e.target.value)} placeholder="Documento del dependiente" className="p-2 border rounded" />
                             </div>
                             <button type="submit" className='mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-color-2 text-base font-medium text-color-1 hover:bg-color-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm'>Guardar</button>
                             <button type="button" className="mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-color-1 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onClick={onClose}>

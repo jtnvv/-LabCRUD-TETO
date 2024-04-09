@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function Modal({ onClose }) {
+function CreateModal({ onClose }) {
     const [idpropietario, setPropietario] = useState('');
     const [direccion, setDireccion] = useState('');
     const [capacidad, setCapacidad] = useState('');
@@ -24,19 +24,19 @@ function Modal({ onClose }) {
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <p className='mt-5'>Propietario: Nombre propietario</p>
                             <div className="flex flex-col">
-                                <label htmlFor="idpropietario" className="mb-2"> Agregar propietario</label>
+                                <label htmlFor="idpropietario" className="mb-2"> Cambiar propietario</label>
                                 <input id="idpropietario" type="text" value={idpropietario} onChange={e => setPropietario(e.target.value)} placeholder="Documento propietario" className="p-2 border rounded" />
                             </div>
                             <div className="flex flex-col">
-                                <label htmlFor="direccion" className="mb-2">Cambiar dirección</label>
+                                <label htmlFor="direccion" className="mb-2">Dirección</label>
                                 <input id="direccion" type="text" value={direccion} onChange={e => setDireccion(e.target.value)} placeholder="Dirección" className="p-2 border rounded" />
                             </div>
                             <div className="flex flex-col">
-                                <label htmlFor="capacidad" className="mb-2">Cambiar capacidad</label>
+                                <label htmlFor="capacidad" className="mb-2">Capacidad</label>
                                 <input id="capacidad" type="number" value={capacidad} onChange={e => setCapacidad(e.target.value)} placeholder="Capacidad" className="p-2 border rounded" />
                             </div>
                             <div className="flex flex-col">
-                                <label htmlFor="niveles" className="mb-2">Cambiar niveles</label>
+                                <label htmlFor="niveles" className="mb-2">Niveles</label>
                                 <input id="niveles" type="number" value={niveles} onChange={e => setNiveles(e.target.value)} placeholder="Niveles" className="p-2 border rounded" />
                             </div>
                             <button type="submit" className='mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-color-2 text-base font-medium text-color-1 hover:bg-color-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm'>Guardar</button>
@@ -54,4 +54,4 @@ function Modal({ onClose }) {
     );
 }
 
-export default Modal;
+export default CreateModal;
