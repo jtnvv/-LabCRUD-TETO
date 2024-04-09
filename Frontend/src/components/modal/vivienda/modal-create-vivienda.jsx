@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 function CreateModal({ onClose }) {
     const [idpropietario, setPropietario] = useState('');
+    const [municipio, setMunicipio] = useState('');
     const [direccion, setDireccion] = useState('');
     const [capacidad, setCapacidad] = useState('');
     const [niveles, setNiveles] = useState('');
@@ -26,6 +27,10 @@ function CreateModal({ onClose }) {
                             <div className="flex flex-col">
                                 <label htmlFor="idpropietario" className="mb-2"> Cambiar propietario</label>
                                 <input id="idpropietario" type="text" value={idpropietario} onChange={e => setPropietario(e.target.value)} placeholder="Documento propietario" className="p-2 border rounded" />
+                            </div>
+                            <div className="flex flex-col">
+                                <label htmlFor="municipio" className="mb-2">Municipio al que pertenece</label>
+                                <input id="municipio" type="number" value={municipio} onChange={e => setCapacidad(e.target.value)} placeholder="Municipio" className="p-2 border rounded" />
                             </div>
                             <div className="flex flex-col">
                                 <label htmlFor="direccion" className="mb-2">Dirección</label>
