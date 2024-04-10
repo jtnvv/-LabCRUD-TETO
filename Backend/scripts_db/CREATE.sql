@@ -31,6 +31,23 @@ CREATE TABLE IF NOT EXISTS public.vivienda
     PRIMARY KEY (id_vivienda)
 );
 
+CREATE TABLE IF NOT EXISTS public.trabajo
+(
+    id_trabajo serial NOT NULL,
+    cargo text NOT NULL,
+    empresa text NOT NULL,
+    salario integer NOT NULL,
+    id_persona integer NOT NULL,
+    PRIMARY KEY (id_trabajo)
+);
+
+ALTER TABLE IF EXISTS public.trabajo
+    ADD FOREIGN KEY (id_persona)
+    REFERENCES public.persona (id_persona) MATCH SIMPLE
+    ON UPDATE CASCADE
+    ON DELETE CASCADE;
+
+
 CREATE TABLE IF NOT EXISTS public.dependiente
 (
     id_cabeza_familia serial NOT NULL,
