@@ -26,6 +26,7 @@ const resideRoutes = require('./routes/reside')
 const dependienteRoutes = require('./routes/dependiente')
 const ubicadaEnRoutes = require('./routes/ubicada-en')
 const gobiernaRoutes = require('./routes/gobierna')
+const trabajoRoutes = require('./routes/trabajo')
 
 //initialize routes
 app.use('/api', authRoutes)
@@ -37,6 +38,8 @@ app.use(resideRoutes)
 app.use(dependienteRoutes)
 app.use(ubicadaEnRoutes)
 app.use(gobiernaRoutes)
+app.use(trabajoRoutes)
+
 app.get("/",  async (req, res) => {
   try {
     res.json("TETICO");
