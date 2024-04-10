@@ -53,8 +53,8 @@ router.post("/trabajo", async (req, res) => {
       const { id } = req.params;
       const { cargo, empresa, salario, id_persona } = req.body;
       const updateTodo = await db.query(
-        "UPDATE trabajo SET direccion = $2, capacidad = $3, niveles = $4 WHERE id_trabajo = $1",
-        [cargo, empresa, salario, id_persona]
+        "UPDATE trabajo SET cargo = $2, empresa = $3, salario = $4, id_persona = $5 WHERE id_trabajo = $1",
+        [id, cargo, empresa, salario, id_persona]
       );
   
       res.json("datos de trabajo actualizados");
