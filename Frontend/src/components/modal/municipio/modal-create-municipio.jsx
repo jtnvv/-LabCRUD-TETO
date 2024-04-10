@@ -1,16 +1,64 @@
 import { useState } from 'react';
-
+import { createMunicipio } from '../../../api/municipio';
+import Swal from 'sweetalert2';
+import { createGobierna } from '../../../api/gobierna';
+import { getGobiernaById } from '../../../api/gobierna';
+import { getPersonaById } from '../../../api/persona';
 function CreateModal({ onClose }) {
-    const [idalcalde, setAlcalde] = useState('');
+    const [nombre, setNombre] = useState('');
     const [area, setArea] = useState('');
     const [altitud, setAltitud] = useState('');
+    const [alcalde, setAlcalde] = useState('');
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Aquí puedes manejar la lógica de envío del formulario
-        console.log({ idalcalde, area, altitud });
-        onClose();
-    };
+
+        if (!nombre || !area || !altitud || !alcalde) {
+            Swal.fire('Error', 'Por favor rellene todos los campos', 'error');
+            return;
+        }
+
+        if (altitud >= 9000 && altitud <= -400) {
+            Swal.fire('Error', 'La altitud debe ser menor a 9000 y mayor a -400', 'error');
+            return;
+        }
+
+        if (area >= 70000) {
+            Swal.fire('Error', 'El área debe ser menor a 70000', 'error');
+            return;
+        }
+
+        try {
+            const alcaldeInfo = await getPersonaById(alcalde);
+            if (!alcaldeInfo.data) {
+                Swal.fire('Error', 'El alcalde no existe', 'error');
+                return;
+            }
+
+            const existingGobierna = await getGobiernaById(alcalde, {
+                es_id_de_persona: 1
+            });
+            if (existingGobierna.data[0].length > 0) {
+                Swal.fire('Error', 'El alcalde ya está asignado a otro municipio', 'error');
+                return;
+            }
+
+            const newMunicipio = await createMunicipio({ nombre, area, altitud });
+            await createGobierna({
+                id_persona: alcalde,
+                id_municipio: newMunicipio.data.id_municipio,
+            });
+            Swal.fire('Éxito', 'Municipio creado correctamente', 'success')
+                .then(() => {
+                    onClose();
+                    window.location.reload();
+                });
+
+        } catch (error) {
+            Swal.fire('Error', 'Error creando municipio', 'error');
+            console.error('Error creating municipio:', error);
+        }
+    }
 
     return (
         <div className="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -22,8 +70,12 @@ function CreateModal({ onClose }) {
                         <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">Agregar Municipio</h3>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div className="flex flex-col">
-                                <label htmlFor="alcalde" className="mb-2">Alcalde</label>
-                                <input id="alcalde" type="text" value={idalcalde} onChange={e => setAlcalde(e.target.value)} placeholder="Documento del alcalde" className="p-2 border rounded" />
+                                <label htmlFor="nombre" className="mb-2">Nombre del municipio</label>
+                                <input id="nombre" type="text" value={nombre} onChange={e => setNombre(e.target.value)} placeholder="Nombre del municipio" className="p-2 border rounded" />
+                            </div>
+                            <div className="flex flex-col">
+                                <label htmlFor="alcalde" className="mb-2">Id del alcalde</label>
+                                <input id="alcalde" type="number" value={alcalde} onChange={e => setAlcalde(e.target.value)} placeholder="Id de la persona que sera el alcalde" className="p-2 border rounded" />
                             </div>
                             <div className="flex flex-col">
                                 <label htmlFor="area" className="mb-2">Area</label>

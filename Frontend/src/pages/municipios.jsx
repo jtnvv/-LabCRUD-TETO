@@ -1,15 +1,28 @@
 import Layout from "../components/layout/layout"
 import Card from "../components/card/card-municipio"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CreateModal from "../components/modal/municipio/modal-create-municipio";
-export default function Municipios() {
+import { getMunicipios } from "../api/municipio";
+import { getGobiernaById } from "../api/gobierna";
+import { getPersonaById } from "../api/persona";
 
-    const municipios = Array.from({ length: 20 }, (_, i) => ({
-        id: i + 1,
-        nombre: `Municipio ${i + 1}`,
-        area: `${100 + i}`,
-        altitud: `${(i + 1) * 10000}`
-    }));
+export default function Municipios() {
+    const [municipios, setMunicipios] = useState([]);
+    useEffect(() => {
+        const fetchMunicipios = async () => {
+            const municipiosData = await getMunicipios();
+            const municipiosWithAlcalde = await Promise.all(municipiosData.data.map(async (municipio) => {
+                const gobiernaData = await getGobiernaById(municipio.id_municipio, {
+                    "es_id_persona": 0
+                });
+                const alcaldeInfo = await getPersonaById(gobiernaData.data[0].id_persona);
+                return { ...municipio, gobierna: gobiernaData.data[0].id_persona, alcalde: alcaldeInfo.data };
+            }));
+            setMunicipios(municipiosWithAlcalde);
+        };
+
+        fetchMunicipios();
+    }, []);
 
     const [search, setSearch] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,11 +52,13 @@ export default function Municipios() {
                             className="p-2 rounded-2xl w-80 mt-4"
                         />
                     </div>
-                    <div className="md:w-3/4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 h-full min-h-screen p-20">
-                        {filteredMunicipios.map((municipio) => (
+                    <div className="md:w-3/4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 h-full min-h-screen p-20 content-start">
+                        {filteredMunicipios.map((municipio, index) => (
                             <Card
-                                key={municipio.id}
-                                id={municipio.id}
+                                key={index}
+                                id={municipio.id_municipio}
+                                idalcalde={municipio.alcalde.id_persona}
+                                nombrealcalde={municipio.alcalde.nombre}
                                 nombre={municipio.nombre}
                                 area={municipio.area}
                                 altitud={municipio.altitud}

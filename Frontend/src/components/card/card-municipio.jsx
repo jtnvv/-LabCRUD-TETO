@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Modal from '../modal/municipio/modal-municipio';
 import ConfirmModal from '../modal/municipio/modal-municipio-delete';
 
-function Card({ id, nombre, area, altitud }) {
+function Card({ id, nombre, area, altitud, idalcalde, nombrealcalde }) {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
@@ -30,7 +30,8 @@ function Card({ id, nombre, area, altitud }) {
                 <FontAwesomeIcon icon={faCity} size="xl" />
                 <h2 className='ml-4 text-bold text-lg'>{nombre}</h2>
             </div>
-            <p>Alcalde: falta--</p>
+            <p>Id municipio: {id}</p>
+            <p>Alcalde: {nombrealcalde}</p>
             <p>Área: {area} km²</p>
             <p>Altitud: {altitud} m</p>
             <button onClick={handleEditClick} className='mr-5 mt-2'>
@@ -39,8 +40,8 @@ function Card({ id, nombre, area, altitud }) {
             <button onClick={handleDeleteClick}>
                 <FontAwesomeIcon icon={faTrash} color="red" size="lg" />
             </button>
-            {isEditModalOpen && <Modal onClose={handleCloseEditModal} />}
-            {isConfirmModalOpen && <ConfirmModal onClose={handleCloseConfirmModal} />}
+            {isEditModalOpen && <Modal onClose={handleCloseEditModal} id={id} idalcaldeext={idalcalde} nombrealcaldeext={nombrealcalde} nombreext={nombre} altitudext={altitud} areaext={area} />}
+            {isConfirmModalOpen && <ConfirmModal onClose={handleCloseConfirmModal} id={id} />}
         </div>
     )
 }
