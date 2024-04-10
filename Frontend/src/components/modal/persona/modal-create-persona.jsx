@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { createPersona } from '../../../api/persona';
+import Swal from 'sweetalert2';
 
 function CreateModal({ onClose }) {
     const [nombre, setNombre] = useState('');
@@ -7,11 +9,65 @@ function CreateModal({ onClose }) {
     const [edad, setEdad] = useState('');
     const [sexo, setSexo] = useState('');
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Aquí puedes manejar la lógica de envío del formulario
-        console.log({ nombre, celular, sexo });
-        onClose();
+        const regex = /^([0-9]+|[a-zA-Z]{2}[0-9]+)$/;
+        if (!regex.test(documento)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'El documento debe contener al menos un número y exactamente dos letras o ninguna.',
+            });
+            return;
+        }
+
+        if (celular.length !== 10) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'El número de celular debe tener 10 dígitos.',
+            });
+            return;
+        }
+
+        if (!Number.isInteger(Number(edad)) || edad < 1 || edad > 150) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Edad invalida',
+            });
+            return;
+        }
+
+        if (sexo === '') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Por favor, selecciona un sexo.',
+            });
+            return;
+        }
+
+        try {
+            await createPersona({ nombre, documento, celular, edad, sexo });
+            onClose();
+            Swal.fire({
+                title: 'Creado',
+                text: 'Persona creada exitosamente.',
+                icon: 'success',
+                timer: null,
+                showConfirmButton: true
+            }).then(() => {
+                window.location.reload();
+            });
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Error al crear la persona.',
+            });
+            console.error('Error creating persona:', error);
+        }
     };
 
     return (
@@ -37,7 +93,7 @@ function CreateModal({ onClose }) {
                             </div>
                             <div className="flex flex-col">
                                 <label htmlFor="edad" className="mb-2">Edad</label>
-                                <input id="edad" type="number" value={edad} onChange={e => setEdad(e.target.value)} placeholder="Edad" className="p-2 border rounded" />
+                                <input id="edad" type="number" value={edad} onChange={e => setEdad(e.target.value)} placeholder="Edad en años" className="p-2 border rounded" />
                             </div>
                             <div className="flex flex-col">
                                 <label htmlFor="sexo" className="mb-2">Sexo</label>

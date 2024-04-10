@@ -1,11 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getDependientes } from '../../../api/dependiente';
+import { getPersonaById } from '../../../api/persona';
+import { deleteDependiente } from '../../../api/dependiente';
+import Swal from 'sweetalert2';
 
-function DependientesModal({ onClose }) {
-    const [datos] = useState([
-        { documento: '123', nombre: 'Juan', edad: 30 },
-        { documento: '456', nombre: 'Ana', edad: 25 },
-        { documento: '789', nombre: 'Pedro', edad: 35 },
-    ]);
+function DependientesModal({ onClose, id }) {
+    const [datos, setDatos] = useState([]);
+
+    useEffect(() => {
+        const fetchDependientes = async () => {
+            const depen = await getDependientes(id, {
+                "es_id_de_dependiente": 0,
+            });
+
+            const datosDependientes = await Promise.all(depen.data.map(async (dependiente) => {
+                const persona = await getPersonaById(dependiente.id_dependiente);
+                return persona.data;
+            }));
+
+            setDatos(datosDependientes);
+        };
+
+        fetchDependientes();
+    }, []);
+
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -13,8 +32,21 @@ function DependientesModal({ onClose }) {
         onClose();
     };
 
-    const handleDelete = (documento) => {
-        console.log("eliminado ", documento)
+    const handleDelete = async (id_persona, id) => {
+        try {
+            await deleteDependiente({
+                "id_cabeza_familia": id,
+                "id_dependiente": id_persona
+            });
+            Swal.fire('Éxito', 'Dependiente eliminado correctamente', 'success')
+                .then(() => {
+                    onClose();
+                    window.location.reload();
+                });
+        } catch (error) {
+            Swal.fire('Error', 'Error eliminando dependiente', 'error');
+            console.error('Error deleting dependiente:', error);
+        }
     };
 
     return (
@@ -29,6 +61,7 @@ function DependientesModal({ onClose }) {
                             <table className="w-full">
                                 <thead>
                                     <tr>
+                                        <th>Id</th>
                                         <th>Documento</th>
                                         <th>Nombre</th>
                                         <th>Edad</th>
@@ -37,12 +70,13 @@ function DependientesModal({ onClose }) {
                                 </thead>
                                 <tbody>
                                     {datos.map((dato, index) => (
-                                        <tr key={index}>
+                                        (dato.id_persona == id) ? null : (<tr key={index}>
+                                            <td>{dato.id_persona}</td>
                                             <td>{dato.documento}</td>
                                             <td>{dato.nombre}</td>
                                             <td>{dato.edad}</td>
-                                            <td><button onClick={() => handleDelete(dato.documento)}>X</button></td>
-                                        </tr>
+                                            <td><button onClick={() => handleDelete(dato.id_persona, id)}>X</button></td>
+                                        </tr>)
                                     ))}
                                 </tbody>
                             </table>

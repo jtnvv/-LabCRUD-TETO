@@ -1,19 +1,53 @@
 import { useState } from 'react';
+import { updatePersona } from '../../../api/persona';
+import { createDependiente } from '../../../api/dependiente';
+import Swal from 'sweetalert2';
 
-function Modal({ onClose }) {
+function Modal({ onClose, id, edad, extnombre, extdocumento, extcelular, extsexo }) {
     const [nombre, setNombre] = useState('');
     const [celular, setCelular] = useState('');
-    const [edad, setEdad] = useState('');
     const [sexo, setSexo] = useState('');
     const [dependiente, setDependiente] = useState('');
+    const [documento, setDocumento] = useState('');
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Aquí puedes manejar la lógica de envío del formulario
-        console.log({ nombre, celular, sexo });
-        onClose();
+        try {
+            if (celular && celular.length !== 10) {
+                Swal.fire('Error', 'El celular debe tener 10 dígitos', 'error');
+                return;
+            }
+            if (documento && (!/^([a-zA-Z]{2}\d+)$/.test(documento))) {
+                Swal.fire('Error', 'El documento debe tener 2 letras y al menos un número', 'error');
+                return;
+            }
+            await updatePersona(id, {
+                "nombre": nombre !== '' ? nombre : extnombre,
+                "celular": celular !== '' ? celular : extcelular,
+                "documento": documento !== '' ? documento : extdocumento,
+                "edad": edad,
+                "sexo": sexo !== '' ? sexo : extsexo
+            });
+            if (dependiente) {
+                await createDependiente({
+                    "id_cabeza_familia": id,
+                    "id_dependiente": id,
+                });
+                await createDependiente({
+                    "id_cabeza_familia": id,
+                    "id_dependiente": dependiente,
+                });
+            }
+            await Swal.fire('Éxito', 'Persona actualizada correctamente', 'success')
+                .then(() => {
+                    onClose();
+                    window.location.reload();
+                });
+        } catch (error) {
+            Swal.fire('Error', 'Error actualizando persona o agregando el dependiente', 'error');
+            console.error('Error updating persona or creating dependiente:', error);
+        }
     };
-
     return (
         <div className="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -32,8 +66,12 @@ function Modal({ onClose }) {
                                 <input id="celular" type="number" value={celular} onChange={e => setCelular(e.target.value)} placeholder="Numero celular (+57)" className="p-2 border rounded" />
                             </div>
                             <div className="flex flex-col">
+                                <label htmlFor="documento" className="mb-2">Cambiar documento</label>
+                                <input id="documento" type="text" value={documento} onChange={e => setDocumento(e.target.value)} placeholder="Documento" className="p-2 border rounded" />
+                            </div>
+                            <div className="flex flex-col">
                                 <p>Edad</p>
-                                <p>Falta--</p>
+                                <p>{edad} años</p>
                             </div>
                             <div className="flex flex-col">
                                 <label htmlFor="sexo" className="mb-2">Modificar Sexo</label>
@@ -46,7 +84,7 @@ function Modal({ onClose }) {
                             </div>
                             <div className="flex flex-col">
                                 <label htmlFor="dependiente" className="mb-2">Agregar un dependiente</label>
-                                <input id="dependiente" type="text" value={dependiente} onChange={e => setDependiente(e.target.value)} placeholder="Documento del dependiente" className="p-2 border rounded" />
+                                <input id="dependiente" type="text" value={dependiente} onChange={e => setDependiente(e.target.value)} placeholder="Id del dependiente" className="p-2 border rounded" />
                             </div>
                             <button type="submit" className='mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-color-2 text-base font-medium text-color-1 hover:bg-color-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm'>Guardar</button>
                             <button type="button" className="mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-color-1 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onClick={onClose}>

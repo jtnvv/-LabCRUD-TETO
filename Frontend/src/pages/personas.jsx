@@ -1,20 +1,26 @@
 import Layout from "../components/layout/layout"
 import Card from "../components/card/card-persona"
-import { useState } from 'react';
-import CreateModal from "../components/modal/persona/modal-create-persona"; // Asegúrate de importar tu componente Modal
+import { useState, useEffect } from 'react';
+import CreateModal from "../components/modal/persona/modal-create-persona";
+import { getPersonas } from "../api/persona";
 
 export default function Personas() {
-    const personas = Array.from({ length: 20 }, (_, i) => ({
-        id: i + 1,
-        nombre: `Persona ${i + 1}`,
-        documento: `123456${i + 1}`,
-        celular: `30012345${i + 1}`,
-        edad: 20 + i,
-        sexo: i % 2 === 0 ? 'Masculino' : 'Femenino',
-    }));
-
+    const [personas, setPersonas] = useState([]);
     const [search, setSearch] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    useEffect(() => {
+        const fetchPersonas = async () => {
+            try {
+                const response = await getPersonas();
+                setPersonas(response.data);
+            } catch (error) {
+                console.error('Error fetching personas:', error);
+            }
+        }
+
+        fetchPersonas();
+    }, []);
 
     const filteredPersonas = personas.filter(persona =>
         persona.nombre.toLowerCase().includes(search.toLowerCase())
@@ -42,11 +48,11 @@ export default function Personas() {
                         />
 
                     </div>
-                    <div className="md:w-3/4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 h-full min-h-screen p-20">
-                        {filteredPersonas.map((persona) => (
+                    <div className="md:w-3/4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 h-full min-h-screen p-20 content-start">
+                        {filteredPersonas.map((persona, index) => (
                             <Card
-                                key={persona.id}
-                                id={persona.id}
+                                key={index}
+                                id={persona.id_persona}
                                 nombre={persona.nombre}
                                 documento={persona.documento}
                                 celular={persona.celular}

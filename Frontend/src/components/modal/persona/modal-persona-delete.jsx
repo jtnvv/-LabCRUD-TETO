@@ -1,8 +1,17 @@
-function ConfirmModal({ onClose }) {
-    const handleConfirmClick = () => {
-        // Aquí puedes poner el código para eliminar el elemento
-        console.log('Elemento eliminado');
-        onClose();
+import { deletePersona } from "../../../api/persona";
+import Swal from 'sweetalert2';
+function ConfirmModal({ onClose, id }) {
+    const handleConfirmClick = async () => {
+        try {
+            await deletePersona(id);
+            Swal.fire('Eliminado', 'Elemento eliminado', 'success')
+                .then(() => {
+                    window.location.reload();
+                    onClose();
+                });
+        } catch (error) {
+            Swal.fire('Error', 'Error eliminando persona: ' + error, 'error'); // Cambia esto
+        }
     };
 
     return (
