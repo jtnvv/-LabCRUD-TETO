@@ -37,7 +37,13 @@ app.use(resideRoutes)
 app.use(dependienteRoutes)
 app.use(ubicadaEnRoutes)
 app.use(gobiernaRoutes)
-
+app.get("/",  async (req, res) => {
+  try {
+    res.json("TETICO");
+  } catch (err) {
+    res.json("NOT TETICO");
+  }
+});
 
 //app start
 const appStart = () => {
