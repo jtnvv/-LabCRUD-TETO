@@ -4,6 +4,11 @@ const url = import.meta.env.VITE_API_URL;
 
 export async function getMunicipios() {
     return await axios.get(`${url}/municipio`);
+
+}
+
+export async function getMunicipioById(id) {
+    return await axios.get(`${url}/municipio/${id}`);
 }
 
 export async function createMunicipio(data) {

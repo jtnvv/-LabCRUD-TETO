@@ -1,16 +1,34 @@
 import Layout from "../components/layout/layout"
 import Card from "../components/card/card-vivienda"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CreateModal from "../components/modal/vivienda/modal-create-vivienda";
+import { getViviendas } from "../api/vivienda";
+import { getUbicadaById } from "../api/ubicada";
+import { getMunicipioById } from "../api/municipio";
+import { getPropietarioById } from "../api/propietario";
+import { getPersonaById } from "../api/persona";
 
 export default function Viviendas() {
-    const viviendas = Array.from({ length: 20 }, (_, i) => ({
-        id: i + 1,
-        direccion: `Dirección ${i + 1}`,
-        capacidad: 2 + i,
-        niveles: 1 + (i % 3),
-    }));
+    const [viviendas, setViviendas] = useState([]);
+    useEffect(() => {
+        const fetchViviendas = async () => {
+            const viviendasData = await getViviendas();
+            const viviendasWithMunicipioAndPropietario = await Promise.all(viviendasData.map(async (vivienda) => {
+                const ubicadaData = await getUbicadaById(vivienda.id_vivienda, { "es_id_de_vivienda": 1 });
+                const municipioInfo = await getMunicipioById(ubicadaData.data[0].id_municipio);
+                console.log(vivienda.id_vivienda)
+                const propietarioData = await getPropietarioById(vivienda.id_vivienda, {
+                    "es_id_persona": 0
+                });
+                const personaInfo = await getPersonaById(propietarioData[0].id_persona);
+                return { ...vivienda, municipio: municipioInfo.data, propietario: personaInfo.data };
+            }));
+            setViviendas(viviendasWithMunicipioAndPropietario);
+            console.log(viviendasWithMunicipioAndPropietario)
+        };
 
+        fetchViviendas();
+    }, []);
     const [search, setSearch] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -40,10 +58,11 @@ export default function Viviendas() {
                         />
                     </div>
                     <div className="md:w-3/4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 h-full min-h-screen p-20">
-                        {filteredViviendas.map((vivienda) => (
+                        {filteredViviendas.map((vivienda, index) => (
                             <Card
-                                key={vivienda.id}
+                                key={index}
                                 id={vivienda.id}
+                                municipio={vivienda.municipio.nombre}
                                 direccion={vivienda.direccion}
                                 capacidad={vivienda.capacidad}
                                 niveles={vivienda.niveles}

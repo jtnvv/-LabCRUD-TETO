@@ -5,7 +5,7 @@ import Modal from '../modal/vivienda/modal-vivienda';
 import ConfirmModal from '../modal/vivienda/modal-vivienda-delete';
 import PropietariosModal from '../modal/vivienda/modal-propietarios';
 
-function Card({ id, direccion, capacidad, niveles }) {
+function Card({ id, direccion, capacidad, niveles, municipio }) {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
     const [isPropietariosModalOpen, setIsPropietariosModalOpen] = useState(false);
@@ -38,7 +38,7 @@ function Card({ id, direccion, capacidad, niveles }) {
                 <FontAwesomeIcon icon={faHome} size="xl" />
                 <h2 className='ml-4 text-bold text-lg'>{direccion}</h2>
             </div>
-            <p>Municipio: falta--</p>
+            <p>Municipio: {municipio}</p>
             <p>Capacidad: {capacidad}</p>
             <p>Niveles: {niveles}</p>
             <button onClick={handleEditClick} className='mr-5 mt-2'>

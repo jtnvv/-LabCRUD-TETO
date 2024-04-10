@@ -1,4 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createVivienda } from '../../../api/vivienda';
+import { getMunicipios } from '../../../api/municipio';
+import { getPersonaById } from '../../../api/persona';
+import { createPropietario } from '../../../api/propietario';
+import { createUbicada } from '../../../api/ubicada';
+import Swal from 'sweetalert2';
 
 function CreateModal({ onClose }) {
     const [idpropietario, setPropietario] = useState('');
@@ -7,11 +13,64 @@ function CreateModal({ onClose }) {
     const [capacidad, setCapacidad] = useState('');
     const [niveles, setNiveles] = useState('');
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // Aquí puedes manejar la lógica de envío del formulario
-        console.log({ direccion, capacidad, niveles });
-        onClose();
+    const [municipios, setMunicipios] = useState([]);
+    useEffect(() => {
+        const loadMunicipios = async () => {
+            const loadedMunicipios = await getMunicipios();
+            setMunicipios(loadedMunicipios.data);
+        };
+
+        loadMunicipios();
+    }, []);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const propietarioInfo = await getPersonaById(idpropietario);
+            if (!propietarioInfo.data) {
+                Swal.fire('Error', 'El propietario no existe', 'error');
+                return;
+            }
+            if (municipio === "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Por favor, selecciona un municipio.',
+                });
+                return;
+            }
+
+            const newVivienda = await createVivienda({
+                "direccion": direccion,
+                "capacidad": capacidad,
+                "niveles": niveles
+            });
+            await createPropietario({
+                "id_persona": idpropietario,
+                "id_vivienda": newVivienda.id_vivienda
+            });
+            await createUbicada({
+                "id_vivienda": newVivienda.id_vivienda,
+                "id_municipio": municipio
+            });
+            onClose();
+            Swal.fire({
+                title: 'Creado',
+                text: 'Vivienda creada exitosamente.',
+                icon: 'success',
+                timer: null,
+                showConfirmButton: true
+            }).then(() => {
+                window.location.reload();
+            });
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Error al crear la vivienda.',
+            });
+            console.error('Error creating vivienda:', error);
+        }
     };
 
     return (
@@ -21,16 +80,20 @@ function CreateModal({ onClose }) {
                 <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                 <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                     <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                        <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">Editar Vivienda</h3>
+                        <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">Crear Vivienda</h3>
                         <form onSubmit={handleSubmit} className="space-y-4">
-                            <p className='mt-5'>Propietario: Nombre propietario</p>
                             <div className="flex flex-col">
-                                <label htmlFor="idpropietario" className="mb-2"> Cambiar propietario</label>
-                                <input id="idpropietario" type="text" value={idpropietario} onChange={e => setPropietario(e.target.value)} placeholder="Documento propietario" className="p-2 border rounded" />
+                                <label htmlFor="idpropietario" className="mb-2">Propietario de la vivienda</label>
+                                <input id="idpropietario" type="text" value={idpropietario} onChange={e => setPropietario(e.target.value)} placeholder="Id propietario" className="p-2 border rounded" />
                             </div>
                             <div className="flex flex-col">
                                 <label htmlFor="municipio" className="mb-2">Municipio al que pertenece</label>
-                                <input id="municipio" type="number" value={municipio} onChange={e => setCapacidad(e.target.value)} placeholder="Municipio" className="p-2 border rounded" />
+                                <select id="municipio" value={municipio} onChange={e => setMunicipio(Number(e.target.value))} className="p-2 border rounded">
+                                    <option value="">Selecciona un municipio</option>
+                                    {municipios.map((muni, index) => (
+                                        <option key={index} value={muni.id_municipio}>{muni.nombre}</option>
+                                    ))}
+                                </select>
                             </div>
                             <div className="flex flex-col">
                                 <label htmlFor="direccion" className="mb-2">Dirección</label>
