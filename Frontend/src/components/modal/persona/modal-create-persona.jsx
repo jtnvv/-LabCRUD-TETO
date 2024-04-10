@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { createPersona } from '../../../api/persona';
+import { getPersonas } from '../../../api/persona';
 import Swal from 'sweetalert2';
 
 function CreateModal({ onClose }) {
@@ -49,7 +50,24 @@ function CreateModal({ onClose }) {
         }
 
         try {
-            await createPersona({ nombre, documento, celular, edad, sexo });
+            const personas = await getPersonas();
+            const existingPersona = personas.data.find(persona => persona.documento === documento);
+            if (existingPersona) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'El documento ya está en uso por otra persona.',
+                });
+                return;
+            }
+
+            await createPersona({
+                "nombre": nombre,
+                "documento": documento,
+                "celular": celular,
+                "edad": edad,
+                "sexo": sexo
+            });
             onClose();
             Swal.fire({
                 title: 'Creado',
@@ -99,8 +117,8 @@ function CreateModal({ onClose }) {
                                 <label htmlFor="sexo" className="mb-2">Sexo</label>
                                 <select id="sexo" value={sexo} onChange={e => setSexo(e.target.value)} className="p-2 border rounded">
                                     <option value="" disabled>Selecciona una opción</option>
-                                    <option value="Masculino">Masculino</option>
-                                    <option value="Femenino">Femenino</option>
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Femenino</option>
                                     <option value="Otro">Otro</option>
                                 </select>
                             </div>

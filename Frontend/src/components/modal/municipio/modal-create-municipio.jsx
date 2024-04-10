@@ -38,12 +38,16 @@ function CreateModal({ onClose }) {
             const existingGobierna = await getGobiernaById(alcalde, {
                 es_id_de_persona: 1
             });
-            if (existingGobierna.data[0].length > 0) {
+            if (existingGobierna.data.length > 0) {
                 Swal.fire('Error', 'El alcalde ya está asignado a otro municipio', 'error');
                 return;
             }
 
-            const newMunicipio = await createMunicipio({ nombre, area, altitud });
+            const newMunicipio = await createMunicipio({
+                "nombre": nombre,
+                "area": area,
+                "altitud": altitud
+            });
             await createGobierna({
                 id_persona: alcalde,
                 id_municipio: newMunicipio.data.id_municipio,

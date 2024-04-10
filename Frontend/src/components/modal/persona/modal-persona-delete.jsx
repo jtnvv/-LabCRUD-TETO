@@ -1,16 +1,24 @@
 import { deletePersona } from "../../../api/persona";
+import { getGobiernaById } from "../../../api/gobierna";
 import Swal from 'sweetalert2';
 function ConfirmModal({ onClose, id }) {
     const handleConfirmClick = async () => {
         try {
-            await deletePersona(id);
-            Swal.fire('Eliminado', 'Elemento eliminado', 'success')
-                .then(() => {
-                    window.location.reload();
-                    onClose();
-                });
+            const gobierna = await getGobiernaById(id, {
+                "es_id_de_persona": 1
+            });
+            if (gobierna.data.length > 0 && gobierna.data[0].id_municipio) {
+                Swal.fire('Error', 'La persona es un alcalde, primero cambia el alcalde del municipio', 'error');
+            } else {
+                await deletePersona(id);
+                Swal.fire('Eliminado', 'Elemento eliminado', 'success')
+                    .then(() => {
+                        window.location.reload();
+                        onClose();
+                    });
+            }
         } catch (error) {
-            Swal.fire('Error', 'Error eliminando persona: ' + error, 'error'); // Cambia esto
+            Swal.fire('Error', 'Error eliminando persona: ' + error, 'error');
         }
     };
 
