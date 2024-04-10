@@ -8,16 +8,16 @@ const router = Router()
 // CREATE crear uno
 router.post("/persona", async (req, res) => {
     try {
-      const { nombre, documento, celular, edad, sexo } = req.body;
+      const {  nombre, documento, celular, edad, sexo } = req.body;
       const personita = await db.query(
-        "INSERT INTO Persona (nombre, documento, celular, edad, sexo) VALUES($1, $2, $3, $4, $5) RETURNING *",
-        [nombre, documento, celular, edad, sexo]
+        "INSERT INTO Persona ( nombre, documento, celular, edad, sexo) VALUES($1, $2, $3, $4, $5) RETURNING *",
+        [ nombre, documento, celular, edad, sexo]
       );
   
       res.json(personita.rows[0]);
     } catch (err) {
       res.json(err.message);
-      console.error(err.message);
+      console.error(err);
     }
   });
   
