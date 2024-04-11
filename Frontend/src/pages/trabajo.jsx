@@ -38,7 +38,7 @@ export default function Trabajo() {
                         >
                             Agregar trabajo
                         </button>
-                        <img src="https://raw.githubusercontent.com/jtnvv/LabCRUD-TETO/main/Frontend/src/assets/extra/persona.png" alt="Trabajos" className="w-40" />
+                        <img src="https://raw.githubusercontent.com/jtnvv/LabCRUD-TETO/main/Frontend/src/assets/extra/trabajo.png" alt="Trabajos" className="w-3/4" />
                         <h1 className="text-6xl font-bold text-color-1">TRABAJO</h1>
                         <input
                             type="text"
