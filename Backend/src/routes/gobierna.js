@@ -36,21 +36,25 @@ router.get("/gobierna", async (req, res) => {
 router.get("/gobierna/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const { es_id_de_persona } = req.body;
-        if (es_id_de_persona) {
-            const ubicacion = await db.query("SELECT * FROM gobierna WHERE id_persona = $1", [id]);
-            res.json(ubicacion.rows);
-        }
-        else {
-            const ubicacion = await db.query("SELECT * FROM gobierna WHERE id_municipio = $1", [id]);
-            res.json(ubicacion.rows);
-        }
-
+        const ubicacion = await db.query("SELECT * FROM gobierna WHERE id_municipio = $1", [id]);
+        res.json(ubicacion.rows);
     } catch (err) {
         res.json(err.message);
         console.error(err.message);
     }
 });
+
+router.get("/gobiernap/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const ubicacion = await db.query("SELECT * FROM gobierna WHERE id_persona = $1", [id]);
+        res.json(ubicacion.rows);
+    } catch (err) {
+        res.json(err.message);
+        console.error(err.message);
+    }
+});
+
 
 // READ municipio especifica con gobierna especifico
 router.get("/gobierna-municipio/", async (req, res) => {
@@ -58,7 +62,7 @@ router.get("/gobierna-municipio/", async (req, res) => {
         const { id_persona, id_municipio } = req.body;
 
         const ubicacion = await db.query("SELECT * FROM gobierna WHERE id_persona = $1 AND id_municipio = $2",
-        [id_persona, id_municipio]);
+            [id_persona, id_municipio]);
 
         res.json(ubicacion.rows[0]);
 
@@ -89,10 +93,10 @@ router.put("/gobierna-municipio/", async (req, res) => {
 router.delete("/gobierna-municipio/", async (req, res) => {
     try {
         const { id_persona, id_municipio } = req.body;
-            const ubicacion = await db.query("DELETE FROM gobierna WHERE id_persona = $1 AND id_municipio = $2",
-                [id_persona, id_municipio]
-            );
-        
+        const ubicacion = await db.query("DELETE FROM gobierna WHERE id_persona = $1 AND id_municipio = $2",
+            [id_persona, id_municipio]
+        );
+
         res.json("datos de gobierna eliminados");
     } catch (err) {
         res.json(err.message);

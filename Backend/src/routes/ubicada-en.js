@@ -36,15 +36,8 @@ router.get("/ubicada", async (req, res) => {
 router.get("/ubicada/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const { es_id_de_vivienda } = req.body;
-        if (es_id_de_vivienda) {
-            const ubicacion = await db.query("SELECT * FROM ubicada_en WHERE id_vivienda = $1", [id]);
-            res.json(ubicacion.rows);
-        }
-        else {
-            const ubicacion = await db.query("SELECT * FROM ubicada_en WHERE id_municipio = $1", [id]);
-            res.json(ubicacion.rows);
-        }
+        const ubicacion = await db.query("SELECT * FROM ubicada_en WHERE id_vivienda = $1", [id]);
+        res.json(ubicacion.rows);
 
     } catch (err) {
         res.json(err.message);
@@ -58,7 +51,7 @@ router.get("/ubicada-municipio/", async (req, res) => {
         const { id_vivienda, id_municipio } = req.body;
 
         const ubicacion = await db.query("SELECT * FROM ubicada_en WHERE id_vivienda = $1 AND id_municipio = $2",
-        [id_vivienda, id_municipio]);
+            [id_vivienda, id_municipio]);
 
         res.json(ubicacion.rows[0]);
 
@@ -89,10 +82,10 @@ router.put("/ubicada-municipio/", async (req, res) => {
 router.delete("/ubicada-municipio/", async (req, res) => {
     try {
         const { id_vivienda, id_municipio } = req.body;
-            const ubicacion = await db.query("DELETE FROM ubicada_en WHERE id_vivienda = $1 AND id_municipio = $2",
-                [id_vivienda, id_municipio]
-            );
-        
+        const ubicacion = await db.query("DELETE FROM ubicada_en WHERE id_vivienda = $1 AND id_municipio = $2",
+            [id_vivienda, id_municipio]
+        );
+
         res.json("datos de ubicada eliminados");
     } catch (err) {
         res.json(err.message);
