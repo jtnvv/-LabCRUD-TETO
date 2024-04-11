@@ -45,6 +45,18 @@ router.get("/ubicada/:id", async (req, res) => {
     }
 });
 
+router.get("/ubicadam/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const ubicacion = await db.query("SELECT * FROM ubicada_en WHERE id_municipio = $1", [id]);
+        res.json(ubicacion.rows);
+
+    } catch (err) {
+        res.json(err.message);
+        console.error(err.message);
+    }
+});
+
 // READ municipio especifica con ubicada especifico
 router.get("/ubicada-municipio/", async (req, res) => {
     try {

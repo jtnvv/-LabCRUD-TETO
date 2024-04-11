@@ -40,7 +40,7 @@ app.use(ubicadaEnRoutes)
 app.use(gobiernaRoutes)
 app.use(trabajoRoutes)
 
-app.get("/",  async (req, res) => {
+app.get("/", async (req, res) => {
   try {
     res.json("TETICO");
   } catch (err) {

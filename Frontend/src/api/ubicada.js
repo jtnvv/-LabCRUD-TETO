@@ -9,3 +9,8 @@ export const createUbicada = async (data) => {
     const res = await axios.post(`${url}/ubicada`, data);
     return res.data;
 }
+
+export const getUbicadaByIdMunicipio = async (id) => {
+    const res = await axios.get(`${url}/ubicadam/${id}`);
+    return res.data;
+}

@@ -1,23 +1,26 @@
-import { deleteMunicipio } from "../../../api/municipio";
-import { getUbicadaByIdMunicipio } from "../../../api/ubicada";
+import { deleteTrabajo } from '../../../api/trabajo';
 import Swal from 'sweetalert2';
 function ConfirmModal({ onClose, id }) {
     const handleConfirmClick = async () => {
         try {
-            const ubicada = await getUbicadaByIdMunicipio(id);
-            if (ubicada.length > 0) {
-                Swal.fire('Error', 'No se puede eliminar el municipio porque tiene viviendas asociadas.', 'error');
-                return;
-            }
-
-            await deleteMunicipio(id);
-            Swal.fire('Eliminado', 'Elemento eliminado', 'success')
-                .then(() => {
-                    window.location.reload();
-                    onClose();
-                });
+            await deleteTrabajo(id);
+            onClose();
+            Swal.fire({
+                title: 'Eliminado',
+                text: 'Trabajo eliminado exitosamente.',
+                icon: 'success',
+                timer: null,
+                showConfirmButton: true
+            }).then(() => {
+                window.location.reload();
+            });
         } catch (error) {
-            Swal.fire('Error', 'Error eliminando persona: ' + error, 'error');
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Error al eliminar el trabajo.',
+            });
+            console.error('Error deleting trabajo:', error);
         }
     };
 
@@ -35,7 +38,7 @@ function ConfirmModal({ onClose, id }) {
                                 </h3>
                                 <div className="mt-2">
                                     <p className="text-sm text-gray-500">
-                                        ¿Estás seguro de que quieres eliminar este elemento?
+                                        ¿Estás seguro de que quieres eliminar esta persona?
                                     </p>
                                 </div>
                             </div>
