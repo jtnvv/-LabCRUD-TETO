@@ -37,7 +37,7 @@ export default function Personas() {
                         >
                             Agregar Persona
                         </button>
-                        <img src="src/assets/extra/persona.png" alt="Personas" className="w-40" />
+                        <img src="https://raw.githubusercontent.com/jtnvv/LabCRUD-TETO/main/Frontend/src/assets/extra/persona.png" alt="Personas" className="w-40" />
                         <h1 className="text-6xl font-bold text-color-1">PERSONAS</h1>
                         <input
                             type="text"

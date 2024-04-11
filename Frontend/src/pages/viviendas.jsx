@@ -45,7 +45,7 @@ export default function Viviendas() {
                         >
                             Agregar Vivienda
                         </button>
-                        <img src="src/assets/extra/vivienda.png" alt="Viviendas" className="w-80" />
+                        <img src="https://raw.githubusercontent.com/jtnvv/LabCRUD-TETO/main/Frontend/src/assets/extra/vivienda.png" alt="Viviendas" className="w-80" />
                         <h1 className="text-6xl font-bold text-color-1">VIVIENDAS</h1>
                         <input
                             type="text"

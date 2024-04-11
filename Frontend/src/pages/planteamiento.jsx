@@ -9,7 +9,7 @@ export default function Planteamiento() {
                         una vivienda y ser residente en un municipio, pero puede ser propietaria de varias viviendas. Nos interesa también conocer las
                         personas que dependen del cabeza de familia (C.F.). Se indicaran los supuestos semánticos que se consideran oportunos para justificar
                         todas las decisiones de diseño.</p>
-                    <img src="src/assets/extra/planteamiento.jpeg" alt="Planteamiento" className="w-2/3 rounded-xl" />
+                    <img src="https://raw.githubusercontent.com/jtnvv/LabCRUD-TETO/main/Frontend/src/assets/extra/planteamiento.jpeg" alt="Planteamiento" className="w-2/3 rounded-xl" />
                 </div>
             </Layout>
         </div>
