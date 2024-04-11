@@ -1,12 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getPropietarioById } from '../../../api/propietario';
+import { getPersonaById } from '../../../api/persona';
 
-function PropietariosModal({ onClose }) {
-    const [datos] = useState([
-        { documento: '123', nombre: 'Juan', edad: 30 },
-        { documento: '456', nombre: 'Ana', edad: 25 },
-        { documento: '789', nombre: 'Pedro', edad: 35 },
-    ]);
+function PropietariosModal({ onClose, id }) {
+    const [datos, setDatos] = useState([]);
 
+    useEffect(() => {
+        const fetchPropietarioData = async () => {
+            const propietarios = await getPropietarioById(id);
+            if (propietarios) {
+                const promises = propietarios.map(async (propietario) => {
+                    const persona = await getPersonaById(propietario.id_persona);
+                    if (persona) {
+                        return {
+                            id_persona: persona.data.id_persona,
+                            documento: persona.data.documento,
+                            nombre: persona.data.nombre,
+                            edad: persona.data.edad
+                        };
+                    }
+                });
+
+                const datos = await Promise.all(promises);
+                setDatos(datos);
+            }
+        };
+
+        fetchPropietarioData();
+    }, [id]);
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -29,19 +50,19 @@ function PropietariosModal({ onClose }) {
                             <table className="w-full">
                                 <thead>
                                     <tr>
+                                        <th>Id</th>
                                         <th>Documento</th>
                                         <th>Nombre</th>
                                         <th>Edad</th>
-                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {datos.map((dato, index) => (
                                         <tr key={index}>
+                                            <td>{dato.id_persona}</td>
                                             <td>{dato.documento}</td>
                                             <td>{dato.nombre}</td>
                                             <td>{dato.edad}</td>
-                                            <td><button onClick={() => handleDelete(dato.documento)}>X</button></td>
                                         </tr>
                                     ))}
                                 </tbody>

@@ -1,16 +1,30 @@
 import { useState } from 'react';
-
-function Modal({ onClose }) {
+import { updateVivienda } from '../../../api/vivienda';
+import { createPropietario } from '../../../api/propietario';
+import Swal from 'sweetalert2';
+function Modal({ onClose, id, direccionext, capacidadext, nivelesext }) {
     const [idpropietario, setPropietario] = useState('');
     const [direccion, setDireccion] = useState('');
     const [capacidad, setCapacidad] = useState('');
     const [niveles, setNiveles] = useState('');
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Aquí puedes manejar la lógica de envío del formulario
-        console.log({ direccion, capacidad, niveles });
-        onClose();
+        try {
+            await createPropietario({
+                "id_persona": idpropietario,
+                "id_vivienda": id
+            });
+            await updateVivienda(id, {
+                "direccion": direccion !== '' ? direccion : direccionext,
+                "capacidad": capacidad !== '' ? parseInt(capacidad) : parseInt(capacidadext),
+                "niveles": niveles !== '' ? parseInt(niveles) : parseInt(nivelesext)
+            });
+            Swal.fire('Éxito', 'La vivienda se actualizó correctamente', 'success');
+            onClose();
+        } catch (error) {
+            Swal.fire('Error', error.message, 'error');
+        }
     };
 
     return (
@@ -22,10 +36,9 @@ function Modal({ onClose }) {
                     <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">Editar Vivienda</h3>
                         <form onSubmit={handleSubmit} className="space-y-4">
-                            <p className='mt-5'>Propietario: Nombre propietario</p>
                             <div className="flex flex-col">
                                 <label htmlFor="idpropietario" className="mb-2"> Agregar propietario</label>
-                                <input id="idpropietario" type="text" value={idpropietario} onChange={e => setPropietario(e.target.value)} placeholder="Documento propietario" className="p-2 border rounded" />
+                                <input id="idpropietario" type="text" value={idpropietario} onChange={e => setPropietario(e.target.value)} placeholder="Id propietario" className="p-2 border rounded" />
                             </div>
                             <div className="flex flex-col">
                                 <label htmlFor="direccion" className="mb-2">Cambiar dirección</label>

@@ -38,6 +38,7 @@ function Card({ id, direccion, capacidad, niveles, municipio }) {
                 <FontAwesomeIcon icon={faHome} size="xl" />
                 <h2 className='ml-4 text-bold text-lg'>{direccion}</h2>
             </div>
+            <p>Id: {id}</p>
             <p>Municipio: {municipio}</p>
             <p>Capacidad: {capacidad}</p>
             <p>Niveles: {niveles}</p>
@@ -48,9 +49,9 @@ function Card({ id, direccion, capacidad, niveles, municipio }) {
                 <FontAwesomeIcon icon={faTrash} color="red" size="lg" />
             </button>
             <button onClick={handlePropietariosClick} className="border-2 border-color-4 pl-1 pr-1 rounded-xl">Propietario(s)</button>
-            {isEditModalOpen && <Modal onClose={handleCloseEditModal} />}
-            {isConfirmModalOpen && <ConfirmModal onClose={handleCloseConfirmModal} />}
-            {isPropietariosModalOpen && <PropietariosModal onClose={handleClosePropietariosModal} />}
+            {isEditModalOpen && <Modal onClose={handleCloseEditModal} id={id} direccionext={direccion} capacidadext={capacidad} nivelesext={niveles} />}
+            {isConfirmModalOpen && <ConfirmModal onClose={handleCloseConfirmModal} id={id} />}
+            {isPropietariosModalOpen && <PropietariosModal onClose={handleClosePropietariosModal} id={id} />}
         </div>
     )
 }

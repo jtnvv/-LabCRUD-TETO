@@ -2,8 +2,11 @@ import axios from 'axios';
 
 const url = import.meta.env.VITE_API_URL;
 
-export async function getGobiernaById(id, data) {
-    return await axios.get(`${url}/gobierna/${id}`, data);
+export async function getGobiernaById(id) {
+    return await axios.get(`${url}/gobierna/${id}`);
+}
+export async function getGobiernaByIdPerson(id) {
+    return await axios.get(`${url}/gobiernap/${id}`);
 }
 export async function createGobierna(data) {
     return await axios.post(`${url}/gobierna`, data);

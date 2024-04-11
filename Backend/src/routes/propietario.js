@@ -36,15 +36,20 @@ router.get("/propietario", async (req, res) => {
 router.get("/propietario/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const { es_id_de_persona } = req.body;
-        if (es_id_de_persona) {
-            const propiedad = await db.query("SELECT * FROM propietario WHERE id_persona = $1", [id]);
-            res.json(propiedad.rows);
-        }
-        else {
-            const propiedad = await db.query("SELECT * FROM propietario WHERE id_vivienda = $1", [id]);
-            res.json(propiedad.rows);
-        }
+        const propiedad = await db.query("SELECT * FROM propietario WHERE id_vivienda = $1", [id]);
+        res.json(propiedad.rows);
+
+    } catch (err) {
+        res.json(err.message);
+        console.error(err.message);
+    }
+});
+
+router.get("/propietariop/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const propiedad = await db.query("SELECT * FROM propietario WHERE id_persona = $1", [id]);
+        res.json(propiedad.rows);
 
     } catch (err) {
         res.json(err.message);
@@ -58,7 +63,7 @@ router.get("/propietario-propiedad/", async (req, res) => {
         const { id_persona, id_vivienda } = req.body;
 
         const propiedad = await db.query("SELECT * FROM propietario WHERE id_persona = $1 AND id_vivienda = $2",
-        [id_persona, id_vivienda]);
+            [id_persona, id_vivienda]);
 
         res.json(propiedad.rows[0]);
 
@@ -89,10 +94,10 @@ router.put("/propietario-propiedad/", async (req, res) => {
 router.delete("/propietario-propiedad/", async (req, res) => {
     try {
         const { id_persona, id_vivienda } = req.body;
-            const deletePropiedad = await db.query("DELETE FROM propietario WHERE id_persona = $1 AND id_vivienda = $2",
-                [id_persona, id_vivienda]
-            );
-        
+        const deletePropiedad = await db.query("DELETE FROM propietario WHERE id_persona = $1 AND id_vivienda = $2",
+            [id_persona, id_vivienda]
+        );
+
         res.json("datos de propietario eliminados");
     } catch (err) {
         res.json(err.message);

@@ -1,14 +1,15 @@
 import { deletePersona } from "../../../api/persona";
-import { getGobiernaById } from "../../../api/gobierna";
+import { getGobiernaByIdPerson } from "../../../api/gobierna";
+import { getPropietarioByIdPerson } from "../../../api/propietario";
 import Swal from 'sweetalert2';
 function ConfirmModal({ onClose, id }) {
     const handleConfirmClick = async () => {
         try {
-            const gobierna = await getGobiernaById(id, {
-                "es_id_de_persona": 1
-            });
-            if (gobierna.data.length > 0 && gobierna.data[0].id_municipio) {
-                Swal.fire('Error', 'La persona es un alcalde, primero cambia el alcalde del municipio', 'error');
+            const gobierna = await getGobiernaByIdPerson(id);
+            const propietario = await getPropietarioByIdPerson(id);
+            console.log(propietario);
+            if (gobierna.data.length > 0 && gobierna.data[0].id_municipio || propietario.length > 0) {
+                Swal.fire('Error', 'La persona es un alcalde o propietario de casa, primero modifica alguna de esasa opciones', 'error');
             } else {
                 await deletePersona(id);
                 Swal.fire('Eliminado', 'Elemento eliminado', 'success')

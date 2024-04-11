@@ -1,8 +1,15 @@
-function ConfirmModal({ onClose }) {
-    const handleConfirmClick = () => {
-        // Aquí puedes poner el código para eliminar el elemento
-        console.log('Elemento eliminado');
-        onClose();
+import { deleteVivienda } from "../../../api/vivienda";
+import Swal from 'sweetalert2';
+
+function ConfirmModal({ id, onClose }) {
+    const handleConfirmClick = async () => {
+        try {
+            await deleteVivienda(id);
+            Swal.fire('Eliminado', 'El elemento ha sido eliminado', 'success');
+            onClose();
+        } catch (error) {
+            Swal.fire('Error', 'Error al eliminar la vivienda', 'error');
+        }
     };
 
     return (

@@ -16,7 +16,6 @@ export default function Viviendas() {
             const viviendasWithMunicipioAndPropietario = await Promise.all(viviendasData.map(async (vivienda) => {
                 const ubicadaData = await getUbicadaById(vivienda.id_vivienda, { "es_id_de_vivienda": 1 });
                 const municipioInfo = await getMunicipioById(ubicadaData.data[0].id_municipio);
-                console.log(vivienda.id_vivienda)
                 const propietarioData = await getPropietarioById(vivienda.id_vivienda, {
                     "es_id_persona": 0
                 });
@@ -24,7 +23,6 @@ export default function Viviendas() {
                 return { ...vivienda, municipio: municipioInfo.data, propietario: personaInfo.data };
             }));
             setViviendas(viviendasWithMunicipioAndPropietario);
-            console.log(viviendasWithMunicipioAndPropietario)
         };
 
         fetchViviendas();
@@ -61,7 +59,8 @@ export default function Viviendas() {
                         {filteredViviendas.map((vivienda, index) => (
                             <Card
                                 key={index}
-                                id={vivienda.id}
+                                id={vivienda.id_vivienda}
+                                idpropietario={vivienda.propietario.id_persona}
                                 municipio={vivienda.municipio.nombre}
                                 direccion={vivienda.direccion}
                                 capacidad={vivienda.capacidad}

@@ -12,10 +12,8 @@ export default function Municipios() {
         const fetchMunicipios = async () => {
             const municipiosData = await getMunicipios();
             const municipiosWithAlcalde = await Promise.all(municipiosData.data.map(async (municipio) => {
-                const gobiernaData = await getGobiernaById(municipio.id_municipio, {
-                    "es_id_de_persona": 0
-                });
-                console.log(gobiernaData);
+                const gobiernaData = await getGobiernaById(municipio.id_municipio);
+                console.log(gobiernaData.data[0]);
                 const alcaldeInfo = await getPersonaById(gobiernaData.data[0].id_persona);
                 return { ...municipio, gobierna: gobiernaData.data[0].id_persona, alcalde: alcaldeInfo.data };
             }));
