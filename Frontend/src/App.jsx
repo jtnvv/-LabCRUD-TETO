@@ -4,6 +4,7 @@ import Personas from "./pages/personas";
 import Municipios from "./pages/municipios";
 import Viviendas from "./pages/viviendas";
 import Planteamiento from "./pages/planteamiento";
+import Trabajo from "./pages/trabajo";
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
           <Route path='/municipios' element={<Municipios />} />
           <Route path='/viviendas' element={<Viviendas />} />
           <Route path='/planteamiento' element={<Planteamiento />} />
+          <Route path='/trabajo' element={<Trabajo />} />
         </Routes>
       </BrowserRouter>
     </>

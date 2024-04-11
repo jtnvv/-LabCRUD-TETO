@@ -55,6 +55,15 @@ export default function Header() {
                     </li>
                     <li>
                         <Link
+                            to="/trabajo"
+                            className={`px-2 py-1 font-medium rounded ${currentPath === '/trabajo' ? 'rounded-3xl border border-color-4' : ''
+                                }`}
+                        >
+                            Trabajo
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
                             to="/planteamiento"
                             className={`px-2 py-1 font-medium rounded ${currentPath === '/planteamiento' ? 'rounded-3xl border border-color-4' : ''
                                 }`}
