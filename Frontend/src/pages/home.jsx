@@ -9,28 +9,28 @@ export default function Home() {
                     <p className="text-xl md:text-2xl font-lato text-color-4 mb-10">Grupo 1 - TETO</p>
                     <div className="space-y-4 font-lato">
                         <div className="bg-color-3 text-color-4 mr-4 md:mr-20 flex flex-col md:flex-row w-full md:w-3/4 rounded-3xl">
-                            <img src="src/assets/daniel.png" alt="CRUD-0" className="w-full md:w-1/4 p-0 m-0 rounded-l-3xl object-cover" />
+                            <img src="https://raw.githubusercontent.com/jtnvv/LabCRUD-TETO/main/Frontend/src/assets/daniel.png" alt="CRUD-0" className="w-full md:w-1/4 p-0 m-0 rounded-l-3xl object-cover" />
                             <div className="p-4 md:p-10">
                                 <p className="text-lg md:text-xl">Daniel Felipe Pérez Chaparro</p>
                                 <p>Ing. de sistemas y computación</p>
                             </div>
                         </div>
                         <div className="bg-color-3 text-color-4 mr-4 md:mr-20 flex flex-col md:flex-row w-full md:w-3/4 rounded-3xl">
-                            <img src="src/assets/sergio.jpeg" alt="CRUD-0" className="w-full md:w-1/4 p-0 m-0 rounded-l-3xl object-cover" />
+                            <img src="https://raw.githubusercontent.com/jtnvv/LabCRUD-TETO/main/Frontend/src/assets/sergio.jpeg" alt="CRUD-0" className="w-full md:w-1/4 p-0 m-0 rounded-l-3xl object-cover" />
                             <div className="p-4 md:p-10">
                                 <p className="text-lg md:text-xl">Sergio Andres Castro Vargas</p>
                                 <p>Ing. de sistemas y computación</p>
                             </div>
                         </div>
                         <div className="bg-color-3 text-color-4 mr-4 md:mr-20 flex flex-col md:flex-row w-full md:w-3/4 rounded-3xl">
-                            <img src="src/assets/acevedo.jpg" alt="CRUD-0" className="w-full md:w-1/4 p-0 m-0 rounded-l-3xl object-cover" />
+                            <img src="https://raw.githubusercontent.com/jtnvv/LabCRUD-TETO/main/Frontend/src/assets/acevedo.jpg" alt="CRUD-0" className="w-full md:w-1/4 p-0 m-0 rounded-l-3xl object-cover" />
                             <div className="p-4 md:p-10">
                                 <p className="text-lg md:text-xl">Juan Steban Acevedo Salinas</p>
                                 <p>Ing. de sistemas y computación</p>
                             </div>
                         </div>
                         <div className="bg-color-3 text-color-4 mr-4 md:mr-20 flex flex-col md:flex-row w-full md:w-3/4 rounded-3xl">
-                            <img src="src/assets/jonathan.jpeg" alt="CRUD-0" className="w-full md:w-1/4 p-0 m-0 rounded-l-3xl object-cover" />
+                            <img src="https://raw.githubusercontent.com/jtnvv/LabCRUD-TETO/main/Frontend/src/assets/jonathan.jpeg" alt="CRUD-0" className="w-full md:w-1/4 p-0 m-0 rounded-l-3xl object-cover" />
                             <div className="p-4 md:p-10">
                                 <p className="text-lg md:text-xl">Jonathan David Veloza Lozano</p>
                                 <p>Ing. de sistemas y computación</p>

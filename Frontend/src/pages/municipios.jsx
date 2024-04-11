@@ -40,7 +40,7 @@ export default function Municipios() {
                         >
                             Agregar Municipio
                         </button>
-                        <img src="src/assets/extra/municipio.png" alt="Municipios" className="w-full" />
+                        <img src="https://raw.githubusercontent.com/jtnvv/LabCRUD-TETO/main/Frontend/src/assets/extra/municipio.png" alt="Municipios" className="w-full" />
                         <h1 className="text-6xl font-bold text-color-1">MUNICIPIOS</h1>
                         <input
                             type="text"
